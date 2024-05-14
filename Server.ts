@@ -58,13 +58,16 @@ export class Server {
                         })
                     })
                 }))
-            })
+            }).optional().transform(x => {
+                if (x) {
+                    return Object.fromEntries(Object.entries(x.contract).map(([k, v]) => 
+                        [k, { abi: v.abi, bytecode: v.evm.bytecode.object}]
+                    ))
+                } else x
+            }),
+            errors: z.unknown().array().optional()
         })
-        const parsed = outputSchema.parse(JSON.parse(output))
-        const result = Object.fromEntries(Object.entries(parsed.contracts.contract).map(([k, v]) =>
-            [k, { abi: v.abi, bytecode: v.evm.bytecode.object}]
-        ))
-        return result
+        return outputSchema.parse(JSON.parse(output))
     }
 
 }
