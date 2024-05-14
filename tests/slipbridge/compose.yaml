@@ -1,0 +1,11 @@
+include:
+  - kanta/compose.yaml
+services:
+  test:
+    build:
+      context: ../..
+      dockerfile: tests/slipbridge/Dockerfile
+    depends_on:
+      - kanta
+    entrypoint: [ "deno" ]
+    command: [ "test", "--allow-read", "--allow-net", "test.ts" ]
