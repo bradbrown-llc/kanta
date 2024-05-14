@@ -1,12 +1,12 @@
 import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.1.3/mod.ts'
-import { Kanta } from './Kanta.ts';
+import { Server } from './Server.ts';
 
 export async function compile(params: jra.types.Params, id:jra.types.Id) {
-    const code = await Kanta.codeFromParams(params, id)
+    const code = await Server.codeFromParams(params, id)
     if (code instanceof Response) return code
-    const version = await Kanta.getSolcFromCode(code, id)
+    const version = await Server.getSolcFromCode(code, id)
     if (version instanceof Response) return version
-    const output = await Kanta.compile(code, version, id)
+    const output = await Server.compile(code, version, id)
     return jra.Server.respond({ result: output, id })
 
 }

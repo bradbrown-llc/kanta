@@ -7,7 +7,7 @@ import { getSolc } from './solcup.ts'
 const cacheDir = fromFileUrl(import.meta.resolve('./.cache'))
 const solcDir = `${cacheDir}/solc`
 
-export class Kanta {
+export class Server {
 
     static async codeFromParams(params:jra.types.Params, id:jra.types.Id) {
         const paramSchema = z.object({ code: z.string() })
