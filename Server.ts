@@ -3,6 +3,7 @@ import * as semver from "https://deno.land/x/semver@v1.4.1/mod.ts";
 import z from 'https://deno.land/x/zod@v3.22.4/index.ts';
 import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.1.3/mod.ts'
 import { getSolc } from './solcup.ts'
+import { abi } from './schemas/abi/mod.ts';
 
 const cacheDir = fromFileUrl(import.meta.resolve('./.cache'))
 const solcDir = `${cacheDir}/solc`
@@ -50,21 +51,7 @@ export class Server {
         const outputSchema = z.object({
             contracts: z.object({
                 contract: z.record(z.string(), z.object({
-                    abi: z.object({
-                        inputs: z.object({
-                            internalType: z.string(),
-                            name: z.string(),
-                            type: z.string()
-                        }).array(),
-                        name: z.string(),
-                        outputs: z.object({
-                            internalType: z.string(),
-                            name: z.string(),
-                            type: z.string()
-                        }).array(),
-                        stateMutability: z.string(),
-                        type: z.string()
-                    }).array(),
+                    abi,
                     evm: z.object({
                         bytecode: z.object({
                             object: z.string()
