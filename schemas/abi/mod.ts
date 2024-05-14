@@ -1,12 +1,18 @@
 import z from "https://deno.land/x/zod@v3.22.4/index.ts";
-import { type } from "./type.ts";
 import { io } from "./io/mod.ts";
 import { stateMutability } from "./stateMutability.ts";
 
 export const abi = z.object({
-    type,
+    type: z.literal('function'),
     name: z.string(),
     inputs: io,
     outputs: io,
     stateMutability
-}).array()
+}).or(z.object({
+    type: z.literal('constructor'),
+    inputs: io,
+    stateMutability
+})).or(z.object({
+    type: z.literal('receive').or(z.literal('fallback')),
+    stateMutability
+})).array()
