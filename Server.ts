@@ -29,7 +29,7 @@ export class Server {
         return solidityVersion
     }
 
-    static async compile(code:string, version:string, id:jra.types.Id) {
+    static async compile(code:string, version:string, _id:jra.types.Id) {
         const command = new Deno.Command(`${solcDir}/${version}`, {
             args: ['--standard-json'],
             stdin: 'piped',

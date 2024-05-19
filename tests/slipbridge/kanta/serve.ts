@@ -8,7 +8,6 @@ export async function compile(params: jra.types.Params, id:jra.types.Id) {
     if (version instanceof Response) return version
     const output = await Server.compile(code, version, id)
     return jra.Server.respond({ result: output, id })
-
 }
 
 const handler:jra.types.ServeHandler = async (jraRequest, _httpRequest, _info):Promise<Response> => {
