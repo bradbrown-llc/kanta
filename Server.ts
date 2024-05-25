@@ -1,12 +1,12 @@
-import { fromFileUrl } from 'https://deno.land/std@0.211.0/path/from_file_url.ts'
+// import { fromFileUrl } from 'https://deno.land/std@0.211.0/path/from_file_url.ts'
 import * as semver from "https://deno.land/x/semver@v1.4.1/mod.ts";
 import z from 'https://deno.land/x/zod@v3.22.4/index.ts';
 import * as jra from 'https://cdn.jsdelivr.net/gh/bradbrown-llc/jra@0.1.3/mod.ts'
 import { getSolc } from './solcup.ts'
 import { abi } from './schemas/abi/mod.ts';
 
-const cacheDir = fromFileUrl(import.meta.resolve('./.cache'))
-const solcDir = `${cacheDir}/solc`
+// const cacheDir = fromFileUrl(import.meta.resolve('./.cache'))
+// const solcDir = `${cacheDir}/solc`
 
 export class Server {
 
@@ -20,16 +20,16 @@ export class Server {
         }
     }
 
-    static async getSolcFromCode(code:string, id:jra.types.Id) {
+    static async getSolcFromCode(code:string, id:jra.types.Id, solcDir:string) {
         const solidityVersionRaw = code.match(/pragma solidity (.+?);/)?.[1]
         if (!solidityVersionRaw) return jra.Server.error.INVALID_PARAMS(id)
         const solidityVersion = semver.clean(solidityVersionRaw)
         if (!solidityVersion) return jra.Server.error.INVALID_PARAMS(id)
-        await getSolc(solidityVersion)
+        await getSolc(solidityVersion, solcDir)
         return solidityVersion
     }
 
-    static async compile(code:string, version:string, _id:jra.types.Id) {
+    static async compile(code:string, version:string, _id:jra.types.Id, solcDir:string) {
         const command = new Deno.Command(`${solcDir}/${version}`, {
             args: ['--standard-json'],
             stdin: 'piped',
